@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('CONTENT LOADED');
     const greeting = document.createElement('h1');
     const root = document.querySelector('#root');
-
     greeting.textContent = 'Discogs API Lookup';
     root.append(greeting);
 
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getReleases(url) {
-        get(url).then(function (data) {
+        get(url + `?token=dEmdRkbzHyZaiaECsJccvowFtDNDqEzoVHUWngAB`).then(function (data) {
             // Destructure the releases
             const { releases } = data;
             // Create  UL
@@ -45,9 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
             releases.map(function (release) {
                 // Create a list item
                 const listItem = document.createElement('li');
+                // Create a button
+                const addToPlaylistBttn = document.createElement ('button');
+                addToPlaylistBttn.textContent = 'Add to Playlist';
                 // Add the release title to the list item
                 listItem.textContent = `${release.title} -  ${release.year}`;
-                // Append the lisi item to the list
+                // dynamically add the button to the list item
+                listItem.appendChild(addToPlaylistBttn);
+                // Append the list item to the list
                 list.appendChild(listItem);
             });
         });
@@ -55,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // This is an Immediately Invoked Function Expression aka IIFE (iffy)
     (function () {
-        get(`https://api.discogs.com/artists/${artistId}`).then(function (data) {
+        get(`https://api.discogs.com/artists/${artistId}?token=dEmdRkbzHyZaiaECsJccvowFtDNDqEzoVHUWngAB`).then(function (data) {
             // Destructure our data
             const { name, releases_url } = data;
             // Call it back
