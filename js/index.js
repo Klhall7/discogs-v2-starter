@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // We're defining a default, but this will change!
     let artistId = '219213';
+    let songsForPlaylist = [];
 
     function get(url) {
         return fetch(url, {
@@ -53,8 +54,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 listItem.appendChild(addToPlaylistBttn);
                 // Append the list item to the list
                 list.appendChild(listItem);
+
+                //add event listener to button
+                addToPlaylistBttn.addEventListener('click', function (e) {
+                    songsForPlaylist =[...songsForPlaylist, release.title];
+                    showPlaylist(songsForPlaylist);
+                });
             });
         });
+    }
+
+    function showPlaylist(songs) {
+        const playlistElement = document.querySelector('#playlist');
+
+        if (!playlistElement) {
+            const newPlaylistElement = document.createElement('div');
+            newPlaylistElement.id = 'playlist' //dynamically add id to new playlist
+            root.appendChild(newPlaylistElement);
+            songsForPlaylist.map(function (song) { 
+                const songParagraphElement = document.createElement('p');
+                songParagraphElement.textContent = song;
+                newPlaylistElement.appendChild(songParagraphElement);
+            });
+
+        } else {  
+            let song = songsForPlaylist[0];
+            if (songsForPlaylist.length >= 1) {
+                song = songsForPlaylist[songsForPlaylist.length -1]
+            }
+            const songParagraphElement = document.createElement('p');
+            songParagraphElement.textContent = song;
+            playlistElement.appendChild(songParagraphElement);
+
+            
+        }
     }
 
     // This is an Immediately Invoked Function Expression aka IIFE (iffy)
